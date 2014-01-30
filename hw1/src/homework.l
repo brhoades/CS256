@@ -56,7 +56,7 @@ NIL nil
 
 ADD \+
 MULT \*
-DIV \/
+div \/
 SUB \-
 LT <
 GT >
@@ -70,7 +70,7 @@ RPAREN [)]
 
 IDENT {LETTER}({LETTER}|{DIGIT}|{OTHER})*
 INTCONST {SUB}?{DIGIT}+
-COMMENT ;+(.)*{NEWLINE}
+COMMENT ;+(.)*
 STRCONST [\"\']({OTHER}|{LETTER}|{DIGIT}|{WSPACE})*[\"\']
 
 
@@ -213,10 +213,7 @@ STRCONST [\"\']({OTHER}|{LETTER}|{DIGIT}|{WSPACE})*[\"\']
                return T_UNKNOWN;
             }
 
-{COMMENT}   {
-               numLines++;
-               printf("\n");
-            }
+{COMMENT}   {}
 
 %%
 
