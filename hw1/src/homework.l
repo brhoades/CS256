@@ -40,7 +40,8 @@ void printTokenInfo(const char* tokenType, const char* lexeme);
 WSPACE [ \t\r]+
 NEWLINE \n
 DIGIT [0-9]
-LETTER [a-zA-Z?_]
+LETTER [a-zA-Z]
+OTHER [\^_?.]
 
 LETSTAR let\*
 IF if
@@ -67,10 +68,10 @@ NE \/=
 LPAREN [(]
 RPAREN [)]
 
-IDENT {LETTER}({LETTER}|{DIGIT})*
+IDENT {LETTER}({LETTER}|{DIGIT}|{OTHER})*
 INTCONST {SUB}?{DIGIT}+
-COMMENT ;+({LETTER}|{DIGIT}|{WSPACE})*{NEWLINE}
-STRCONST [\"\']({LETTER}|{DIGIT}|{WSPACE})*[\"\']
+COMMENT ;+({LETTER}|{DIGIT}|{WSPACE}|{OTHER})*{NEWLINE}
+STRCONST [\"\']({OTHER}|{LETTER}|{DIGIT}|{WSPACE})*[\"\']
 
 
 %%
@@ -203,6 +204,7 @@ STRCONST [\"\']({LETTER}|{DIGIT}|{WSPACE})*[\"\']
 
 {NEWLINE}   {
                numLines+=1;
+               printf("\n");
             }
 
 {WSPACE}    {}
@@ -217,7 +219,7 @@ STRCONST [\"\']({LETTER}|{DIGIT}|{WSPACE})*[\"\']
 
 void printTokenInfo(const char* tokenType, const char* lexeme)
 {
-  printf("TOKEN: %s  LEXEME: %s\n", tokenType, lexeme);
+  printf("TOKEN: %s\t LEXEME: %s\n", tokenType, lexeme);
 }
 
 //You should specify a yywrap function.
