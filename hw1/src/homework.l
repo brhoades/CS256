@@ -41,7 +41,7 @@ WSPACE [ \t\r]+
 NEWLINE \n
 DIGIT [0-9]
 LETTER [a-zA-Z]
-OTHER [\^_?.]
+OTHER [_]
 
 LETSTAR let\*
 IF if
@@ -68,10 +68,10 @@ NE \/=
 LPAREN [(]
 RPAREN [)]
 
-IDENT {LETTER}({LETTER}|{DIGIT}|{OTHER})*
-INTCONST {SUB}?{DIGIT}+
+IDENT ({LETTER}|{OTHER})({LETTER}|{DIGIT}|{OTHER})*
+INTCONST ({SUB}|{ADD})?{DIGIT}+
 COMMENT ;+(.)*
-STRCONST [\"\']({OTHER}|{LETTER}|{DIGIT}|{WSPACE})*[\"\']
+STRCONST [\"\'](.)*[\"\']
 
 
 %%
@@ -229,6 +229,6 @@ int yywrap() {return 1;}
 int main()
 {
   while (yylex());
-  printf("Processed %d lines\n", numLines);
+  //printf("Processed %d lines\n", numLines);
   return 0;
 }
