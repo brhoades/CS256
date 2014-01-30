@@ -56,7 +56,7 @@ NIL nil
 
 ADD \+
 MULT \*
-div \/
+DIV \/
 SUB \-
 LT <
 GT >
