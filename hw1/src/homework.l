@@ -203,7 +203,7 @@ STRCONST [\"\']({OTHER}|{LETTER}|{DIGIT}|{WSPACE})*[\"\']
             }
 
 {NEWLINE}   {
-               numLines+=1;
+               numLines++;
                printf("\n");
             }
 
@@ -213,7 +213,10 @@ STRCONST [\"\']({OTHER}|{LETTER}|{DIGIT}|{WSPACE})*[\"\']
                return T_UNKNOWN;
             }
 
-{COMMENT}   {}
+{COMMENT}   {
+               numLines++;
+               printf("\n");
+            }
 
 %%
 
