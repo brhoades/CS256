@@ -1,17 +1,25 @@
-/* example1.l
-	Example of a lex specification file
+/*
+ * Copyright (C) 2014 Joshua Michael Hertlein <jmhertlein@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-	To create the lexical analyzer: 
-	flex example1.l
-	g++ lex.yy.c -o lexer
-	lexer < inputFileName
-*/
 
 %{
 /*This is vitally important*/
 /* Definitions of constants, vars, function prototypes, and #includes go here*/
 
-/* COMMENT ({RPAREN}|{LPAREN}|{OPERATOR}|{WSPACE}|{DIGIT}|{LETTER})*;+({LETTER}|{DIGIT}|{WSPACE})*{NEWLINE} */
 #define T_IDENT    1
 #define T_INTCONST 2
 #define T_UNKNOWN  3
