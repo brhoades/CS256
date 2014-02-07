@@ -71,7 +71,7 @@ RPAREN [)]
 IDENT ({LETTER}|{OTHER})({LETTER}|{DIGIT}|{OTHER})*
 INTCONST ({SUB}|{ADD})?{DIGIT}+
 COMMENT ;+(.)*
-STRCONST [\"\'](.)*[\"\']
+STRCONST (\"(.)*\")|(\'(.)*\')
 
 
 %%
