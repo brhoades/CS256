@@ -77,7 +77,6 @@ N_PARENTHESIZED_EXPR : N_ARITHLOGIC_EXPR { printRule("PARENTHESIZED_EXPR" , "ARI
                      ;
 
 N_LET_EXPR : T_LETSTAR T_LPAREN N_ID_EXPR_LIST T_RPAREN N_EXPR { printRule("LET_EXPR", "let* ( ID_EXPR_LIST ) EXPR"); }
-           | 
            ;
 
 N_LAMBDA_EXPR : T_LAMBDA T_LPAREN N_ID_LIST T_RPAREN N_EXPR { printRule("LAMBDA_EXPR", "lambda ( ID_LIST ) EXPR"); }
