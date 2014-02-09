@@ -1,0 +1,18 @@
+( ; "Main" expression list begins here
+  (+ 5 -14)
+  (let* ((red t)
+         (black nil)
+         (white (not (and red black)))
+         (x (/ marmaduke 0))
+         (y (or (> x y) (= x 50)))
+         (z (and (/= x 100) (< y "X"))) 
+         (greeting "hello kitty!")
+	   (fluffy1 (lambda (a b) (* a 100)))
+       ) 
+    (if (or (>= (scooby doo) -314) white) bark "meow")
+   )
+  (print (- (input) I_am_the_walrus))
+  (if (<= "1234" 1234) t nil) 
+  (yu_shiang_kitty_paws was here)
+ )
+; shouldn't be any syntax errors detected in this file 
