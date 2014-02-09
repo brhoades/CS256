@@ -52,7 +52,7 @@ extern "C" {
 N_START           : N_EXPR
                     {
                     printRule ("START", "EXPR");
-                    printf("\n-- Completed parsing --\n\n");
+                    printf("\n---- Completed parsing ----\n\n");
                     return 0;
                     };
 
@@ -77,18 +77,19 @@ N_PARENTHESIZED_EXPR : N_ARITHLOGIC_EXPR { printRule("PARENTHESIZED_EXPR" , "ARI
                      ;
 
 N_LET_EXPR : T_LETSTAR T_LPAREN N_ID_EXPR_LIST T_RPAREN N_EXPR { printRule("LET_EXPR", "let* ( ID_EXPR_LIST ) EXPR"); }
+           | 
            ;
 
 N_LAMBDA_EXPR : T_LAMBDA T_LPAREN N_ID_LIST T_RPAREN N_EXPR { printRule("LAMBDA_EXPR", "lambda ( ID_LIST ) EXPR"); }
               ;
 
-N_INPUT_EXPR : T_INPUT { printRules("INPUT_EXPR", "input"); }
+N_INPUT_EXPR : T_INPUT { printRule("INPUT_EXPR", "input"); }
              ;
 
-N_PRINT_EXPR : T_PRINT N_EXPR { printRules("PRINT_EXPR", "print"); }
+N_PRINT_EXPR : T_PRINT N_EXPR { printRule("PRINT_EXPR", "print EXPR"); }
              ;
 
-N_IF_EXPR : T_IF N_EXPR N_EXPR N_EXPR { printRules("IF_EXPR", "if EXPR EXPR EXPR"); }
+N_IF_EXPR : T_IF N_EXPR N_EXPR N_EXPR { printRule("IF_EXPR", "if EXPR EXPR EXPR"); }
           ;
 
 
@@ -123,13 +124,15 @@ N_ARITH_OP : T_ADD { printRule("ARITH_OP", "+"); }
            | T_SUB { printRule("ARITH_OP", "-"); }
            ;
 
-N_ID_EXPR_LIST : N_ID_EXPR_LIST T_LPAREN T_IDENT N_EXPR T_RPAREN { printRule("ID_EXPR_LIST", "ID_EXPR_LIST ( IDENT EXPR )"); }
+N_ID_EXPR_LIST :  /* epsilon */ { printRule("ID_EXPR_LIST", "epsilon"); }
+               | N_ID_EXPR_LIST T_LPAREN T_IDENT N_EXPR T_RPAREN { printRule("ID_EXPR_LIST", "ID_EXPR_LIST ( IDENT EXPR )"); }
+               ;
 
 N_EXPR_LIST : N_EXPR { printRule("EXPR_LIST", "EXPR"); }
           | N_EXPR N_EXPR_LIST { printRule("EXPR_LIST", "EXPR EXPR_LIST"); }
           ;
 
-N_ID_LIST : T_IDENT { printRule("ID_LIST", "IDENT"); }
+N_ID_LIST : { printRule("ID_LIST", "epsilon"); }
           | N_ID_LIST T_IDENT { printRule("ID_LIST", "ID_LIST IDENT"); }
           ;
 
@@ -144,7 +147,7 @@ void printRule(const char *lhs, const char *rhs) {
 }
 
 int yyerror(const char *s) {
-  printf("%s\n", s);
+  printf("MY_ERROR:%s\n", s);
   return(1);
 }
 
@@ -157,6 +160,5 @@ int main() {
     yyparse();
   } while (!feof(yyin));
 
-  printf("%d lines processed\n", numLines);
   return 0;
 }

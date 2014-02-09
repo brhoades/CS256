@@ -187,7 +187,6 @@ STRCONST (\"(.)*\")|(\'(.)*\')
 
 {NEWLINE}   {
                numLines++;
-               printf("\n");
             }
 
 {WSPACE}    {}
