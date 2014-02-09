@@ -147,7 +147,7 @@ void printRule(const char *lhs, const char *rhs) {
 }
 
 int yyerror(const char *s) {
-  printf("MY_ERROR:%s\n", s);
+  printf("Line %d: %s\n", numLines+1, s);
   return(1);
 }
 
