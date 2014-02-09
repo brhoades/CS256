@@ -17,23 +17,6 @@
 
 
 %{
-/*This is vitally important*/
-/* Definitions of constants, vars, function prototypes, and #includes go here*/
-
-#define T_IDENT    1
-#define T_INTCONST 2
-#define T_UNKNOWN  3
-#define T_FOO      4
-#define T_COMMENT  5
-#define T_OPERATOR 6
-#define T_LPAREN   7
-#define T_RPAREN   8
-#define T_KEYWORD  9
-#define T_STRCONST 10
-
-int numLines = 0;
-void printTokenInfo(const char* tokenType, const char* lexeme);
-
 %}
 
 /*Regexes*/
@@ -84,102 +67,102 @@ STRCONST (\"(.)*\")|(\'(.)*\')
 
 {LETSTAR}   {
                printTokenInfo("LETSTAR", yytext);
-               return T_KEYWORD;
+               return T_LETSTAR;
             }
 
 {IF}        {
                printTokenInfo("IF", yytext);
-               return T_KEYWORD;
+               return T_IF;
             }
 
 {LAMBDA}    {
                printTokenInfo("LAMBDA", yytext);
-               return T_KEYWORD;
+               return T_LAMBDA;
             }
 
 {PRINT}     {
                printTokenInfo("PRINT", yytext);
-               return T_KEYWORD;
+               return T_PRINT;
             }
 
 {INPUT}     {
                printTokenInfo("INPUT", yytext);
-               return T_KEYWORD;
+               return T_INPUT;
             }
 
 {AND}       {
                printTokenInfo("AND", yytext);
-               return T_KEYWORD;
+               return T_AND;
             }
 
 {OR}        {
                printTokenInfo("OR", yytext);
-               return T_KEYWORD;
+               return T_OR;
             }
 
 {NOT}       {
                printTokenInfo("NOT", yytext);
-               return T_KEYWORD;
+               return T_NOT;
             }
 
 {T}         {
                printTokenInfo("T", yytext);
-               return T_KEYWORD;
+               return T_T;
             }
 
 {NIL}       {
                printTokenInfo("NIL", yytext);
-               return T_KEYWORD;
+               return T_NIL;
             }
 
 {ADD}       {
                printTokenInfo("ADD", yytext);
-               return T_OPERATOR;
+               return T_ADD;
             }
 
 {SUB}       {
                printTokenInfo("SUB", yytext);
-               return T_OPERATOR;
+               return T_SUB;
             }
 
 {MULT}      {
                printTokenInfo("MULT", yytext);
-               return T_OPERATOR;
+               return T_MULT;
             }
 
 {DIV}       {
                printTokenInfo("DIV", yytext);
-               return T_OPERATOR;
+               return T_DIV;
             }
 
 {LT}        {
                printTokenInfo("LT", yytext);
-               return T_OPERATOR;
+               return T_LT;
             }
 
 {GT}        {
                printTokenInfo("GT", yytext);
-               return T_OPERATOR;
+               return T_GT;
             }
 
 {GE}        {
                printTokenInfo("GE", yytext);
-               return T_OPERATOR;
+               return T_GE;
             }
 
 {LE}        {
                printTokenInfo("LE", yytext);
-               return T_OPERATOR;
+               return T_LE;
             }
 
 {NE}        {
                printTokenInfo("NE", yytext);
-               return T_OPERATOR;
+               return T_NE;
             }
 
 {EQ}        {
                printTokenInfo("EQ", yytext);
-               return T_OPERATOR;
+               return T_EQ;
             }
 
 {LPAREN}    {
@@ -216,19 +199,3 @@ STRCONST (\"(.)*\")|(\'(.)*\')
 {COMMENT}   {}
 
 %%
-
-void printTokenInfo(const char* tokenType, const char* lexeme)
-{
-  printf("TOKEN: %s\t LEXEME: %s\n", tokenType, lexeme);
-}
-
-//You should specify a yywrap function.
-//Having it return 1 means only 1 input file will be scanned
-int yywrap() {return 1;}
-
-int main()
-{
-  while (yylex());
-  //printf("Processed %d lines\n", numLines);
-  return 0;
-}
