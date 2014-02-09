@@ -60,19 +60,34 @@ N_CONST : T_STRCONST { printRule("CONST", "STRCONST"); }
         | T_T { printRule("CONST", "t"); }
         ;
 
-N_IDENT_LIST      : /* epsilon */                      { printRule("IDENT_LIST", "epsilon"); }
-                  | N_IDENT_LIST T_IDENT               { printRule("IDENT_LIST", "IDENT_LIST IDENT"); } 
-                  ;
-
-N_INTCONST_LIST   : T_INTCONST                         { printRule("INTCONST_LIST", "INTCONST"); }
-                  | N_INTCONST_LIST T_INTCONST         { printRule("INTCONST_LIST", "INTCONST_LIST INTCONST"); } 
-                  ;
-
 N_PARENTHESIZED_EXPR : N_ARITHLOGIC_EXPR { printRule("PARENTHESIZED_EXPR" , "ARITHLOGIC_EXPR"); }
+                     | N_EXPR_LIST { printRule("PARENTHESIZED_EXPR", "EXPR_LIST"); }
+                     | N_LET_EXPR { printRule("PARENTHESIZED_EXPR", "LET_EXPR"); }
+                     | N_INPUT_EXPR { printRule("PARENTHESIZED_EXPR", "INPUT_EXPR"); }
+                     | N_PRINT_EXPR { printRule("PARENTHESIZED_EXPR", "PRINT_EXPR"); }
+                     | N_IF_EXPR { printRule("PARENTHESIZED_EXPR", "IF_EXPR"); }
+                     | N_LAMBDA_EXPR { printRule("PARENTHESIZED_EXPR", "LAMBDA_EXPR"); }
                      ;
 
-N_ARITHLOGIC_EXPR : N_BIN_OP EXPR EXPR { printRule("ARITHLOGIC_EXPR", "BIN_OP EXPR EXPR"); }
-                  : N_UN_OP EXPR       { printRule("ARITHLOGIC_EXPR", "UN_OP EXPR"); }
+N_LET_EXPR : T_LETSTAR T_LPAREN N_ID_EXPR_LIST T_RPAREN N_EXPR { printRule("LET_EXPR", "let* ( ID_EXPR_LIST ) EXPR"); }
+           ;
+
+N_LAMBDA_EXPR : T_LAMBDA T_LPAREN N_ID_LIST T_RPAREN N_EXPR { printRule("LAMBDA_EXPR", "lambda ( ID_LIST ) EXPR"); }
+              ;
+
+N_INPUT_EXPR : T_INPUT { printRules("INPUT_EXPR", "input"); }
+             ;
+
+N_PRINT_EXPR : T_PRINT N_EXPR { printRules("PRINT_EXPR", "print"); }
+             ;
+
+N_IF_EXPR : T_IF N_EXPR N_EXPR N_EXPR { printRules("IF_EXPR", "if EXPR EXPR EXPR"); }
+          ;
+
+
+
+N_ARITHLOGIC_EXPR : N_BIN_OP N_EXPR N_EXPR { printRule("ARITHLOGIC_EXPR", "BIN_OP EXPR EXPR"); }
+                  | N_UN_OP N_EXPR       { printRule("ARITHLOGIC_EXPR", "UN_OP EXPR"); }
                   ;
 
 N_BIN_OP : N_LOG_OP   { printRule("BIN_OP", "LOG_OP"); }
@@ -100,6 +115,17 @@ N_ARITH_OP : T_ADD { printRule("ARITH_OP", "+"); }
            | T_DIV { printRule("ARITH_OP", "/"); }
            | T_SUB { printRule("ARITH_OP", "-"); }
            ;
+
+N_ID_EXPR_LIST : N_ID_EXPR_LIST T_LPAREN T_IDENT N_EXPR T_RPAREN { printRule("ID_EXPR_LIST", "ID_EXPR_LIST ( IDENT EXPR )"); }
+
+N_EXPR_LIST : N_EXPR { printRule("EXPR_LIST", "EXPR"); }
+          | N_EXPR N_EXPR_LIST { printRule("EXPR_LIST", "EXPR EXPR_LIST"); }
+          ;
+
+N_ID_LIST : T_IDENT { printRule("ID_LIST", "IDENT"); }
+          | N_ID_LIST T_IDENT { printRule("ID_LIST", "ID_LIST IDENT"); }
+          ;
+
 %%
 
 #include "lex.yy.c"
