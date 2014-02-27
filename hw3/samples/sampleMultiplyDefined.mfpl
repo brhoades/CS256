@@ -1,6 +1,0 @@
-(let* ( (x 5)
-        (y "hello")
-        (x 1)
-      )
-  (print x)
-)

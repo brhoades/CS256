@@ -1,0 +1,22 @@
+TOKEN: LPAREN    LEXEME: (
+TOKEN: LAMBDA    LEXEME: lambda
+
+___Entering new scope...
+
+TOKEN: LPAREN    LEXEME: (
+ID_LIST -> epsilon
+TOKEN: IDENT     LEXEME: x
+ID_LIST -> ID_LIST IDENT
+___Adding x to symbol table
+TOKEN: IDENT     LEXEME: y
+ID_LIST -> ID_LIST IDENT
+___Adding y to symbol table
+TOKEN: IDENT     LEXEME: z
+ID_LIST -> ID_LIST IDENT
+___Adding z to symbol table
+TOKEN: RPAREN    LEXEME: )
+TOKEN: LPAREN    LEXEME: (
+TOKEN: PRINT     LEXEME: print
+TOKEN: IDENT     LEXEME: i
+EXPR -> IDENT
+Line 1: Undefined identifier
