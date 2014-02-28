@@ -1,0 +1,1 @@
+(lambda ( x y z ) (lambda (x) (print x)))

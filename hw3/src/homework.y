@@ -39,6 +39,7 @@ void printTokenInfo(const char* tokenType, const char* lexeme);
 void beginScope();
 void endScope();
 bool findEntryInAnyScope(string theName);
+bool findEntryInTopScope(string theName);
 
 extern "C" {
     int yyparse(void);
@@ -155,14 +156,14 @@ N_ID_EXPR_LIST :  /* epsilon */ { printRule("ID_EXPR_LIST", "epsilon"); }
                   printRule("ID_EXPR_LIST", "ID_EXPR_LIST ( IDENT EXPR )"); 
                                          
                   printf("___Adding %s to symbol table\n", $3);                          
-                  bool found = findEntryInAnyScope(string($3));
+                  bool found = findEntryInTopScope(string($3));
                   if(found) {
                     printf("Line %d: Multiply defined identifier\n", numLines+1);
                     return 1;
                   } else {
                     //add symbol to table
                     scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(string($3), -1));
-                   }
+                  } 
                  };
 
 N_EXPR_LIST : N_EXPR { printRule("EXPR_LIST", "EXPR"); }
@@ -174,7 +175,7 @@ N_ID_LIST : { printRule("ID_LIST", "epsilon"); }
                   printRule("ID_LIST", "ID_LIST IDENT"); 
               
                   printf("___Adding %s to symbol table\n", $2);                          
-                  bool found = findEntryInAnyScope(string($2));
+                  bool found = findEntryInTopScope(string($2));
                   if(found) {
                      printf("Line %d: Multiply defined identifier\n", numLines);
                      return 1;
@@ -233,5 +234,15 @@ bool findEntryInAnyScope(string theName) {
     found = findEntryInAnyScope(theName);
     scopeStack.push(symbolTable); // restore the stack
     return(found);
+  } 
+}
+
+bool findEntryInTopScope(string theName) {
+  if (scopeStack.empty( )) return(false);
+  bool found = scopeStack.top( ).findEntry(theName);
+  if (found)
+    return(true);
+  else {
+    return(false);
   } 
 }
