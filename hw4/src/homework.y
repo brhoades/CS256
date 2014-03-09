@@ -31,7 +31,7 @@
 #include "SymbolTableEntry.h"
 #include "TypeInfo.h"
 
-int numLines = 0; 
+int numLines = 0;
 stack<SYMBOL_TABLE> scopeStack;
 
 void printRule(const char *lhs, const char *rhs);
@@ -42,6 +42,9 @@ void endScope();
 bool findEntryInAnyScope(string theName);
 bool findEntryInTopScope(string theName);
 void error(string msg);
+
+bool argTypesOkay(int, int, int);
+string getArgTypesErrorMessage(int, int, int);
 
 extern "C" {
     int yyparse(void);
@@ -60,7 +63,7 @@ extern "C" {
 %token  T_IDENT T_INTCONST T_UNKNOWN T_LPAREN T_RPAREN T_STRCONST T_ADD T_MULT T_DIV T_SUB T_LT T_GT T_LE T_GE T_EQ T_NE T_LETSTAR T_IF T_LAMBDA T_PRINT T_INPUT T_AND T_OR T_NOT T_T T_NIL
 
 %type <text> T_IDENT
-%type <typeInfo> N_EXPR N_PARENTHESIZED_EXPR N_IF_EXPR N_LAMBDA_EXPR N_CONST N_INPUT_EXPR N_ARITHLOGIC_EXPR
+%type <typeInfo> N_EXPR N_PARENTHESIZED_EXPR N_IF_EXPR N_LAMBDA_EXPR N_CONST N_INPUT_EXPR N_ARITHLOGIC_EXPR N_BIN_OP
 
 /* Starting point */
 %start        N_START
@@ -144,7 +147,13 @@ N_IF_EXPR : T_IF N_EXPR N_EXPR N_EXPR { printRule("IF_EXPR", "if EXPR EXPR EXPR"
 
 
 
-N_ARITHLOGIC_EXPR : N_BIN_OP N_EXPR N_EXPR { printRule("ARITHLOGIC_EXPR", "BIN_OP EXPR EXPR"); }
+N_ARITHLOGIC_EXPR : N_BIN_OP N_EXPR N_EXPR { 
+                      printRule("ARITHLOGIC_EXPR", "BIN_OP EXPR EXPR"); 
+                      $$.type = $1.returnType;
+                      if(!argTypesOkay($1.type, $2.type, $3.type)
+                          error(getArgTypesErrorMessage($1.type, $2.type, $3.type);
+                          return 1;
+                    }
                   | N_UN_OP N_EXPR {
                       printRule("ARITHLOGIC_EXPR", "UN_OP EXPR");
                       if($2.type == FUNCTION) {
@@ -157,9 +166,21 @@ N_ARITHLOGIC_EXPR : N_BIN_OP N_EXPR N_EXPR { printRule("ARITHLOGIC_EXPR", "BIN_O
                     }
                   ;
 
-N_BIN_OP : N_LOG_OP   { printRule("BIN_OP", "LOG_OP"); }
-         | N_REL_OP   { printRule("BIN_OP", "REL_OP"); }
-         | N_ARITH_OP { printRule("BIN_OP", "ARITH_OP"); }
+N_BIN_OP : N_LOG_OP   { 
+             printRule("BIN_OP", "LOG_OP");
+             $$.returnType = BOOL;
+             $$.type = LOG;
+           }
+         | N_REL_OP   { 
+             printRule("BIN_OP", "REL_OP");
+             $$.returnType = BOOL;
+             $$.type = REL;
+           }
+         | N_ARITH_OP { 
+             printRule("BIN_OP", "ARITH_OP");
+             $$.type = ARITH;
+             $$.returnType = INT;
+           }
          ;
 
 N_UN_OP : T_NOT { printRule("UN_OP", "not"); }
@@ -281,4 +302,22 @@ bool findEntryInTopScope(string theName) {
 
 void error(string msg) {
   printf("Line %d: %s\n", numLines+1, msg.c_str());
+}
+
+bool argTypesOkay(int opType, int t1, int t2) {
+  switch(opType) {
+    case REL:
+      return (t1 == STR && t2 == STR) ||
+             (t1 == INT && t2 == INT);
+    case ARITH:
+      return (t1 == INT && t2 == INT);
+    case LOG:
+      return (t1 == t2) ||
+             (t1 == INT && t2 == STR) || //FINISH THIS
+             ();
+  }
+}
+
+string getArgTypesErrorMessage(int, int, int) {
+
 }

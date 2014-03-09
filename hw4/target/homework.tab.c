@@ -70,7 +70,7 @@
 #include "SymbolTableEntry.h"
 #include "TypeInfo.h"
 
-int numLines = 0; 
+int numLines = 0;
 stack<SYMBOL_TABLE> scopeStack;
 
 void printRule(const char *lhs, const char *rhs);
@@ -477,9 +477,9 @@ static const yytype_uint8 yyrline[] =
 {
        0,    70,    70,    77,    80,    88,    96,    97,   103,   104,
      107,   108,   109,   110,   111,   112,   113,   116,   122,   131,
-     139,   142,   147,   148,   160,   161,   162,   165,   168,   169,
-     172,   173,   174,   175,   176,   177,   180,   181,   182,   183,
-     186,   187,   201,   202,   205,   206
+     139,   142,   147,   151,   163,   168,   173,   180,   183,   184,
+     187,   188,   189,   190,   191,   192,   195,   196,   197,   198,
+     201,   202,   216,   217,   220,   221
 };
 #endif
 
@@ -1456,12 +1456,15 @@ yyreduce:
 
   case 22:
 #line 147 "../src/homework.y" /* yacc.c:1646  */
-    { printRule("ARITHLOGIC_EXPR", "BIN_OP EXPR EXPR"); }
-#line 1461 "homework.tab.c" /* yacc.c:1646  */
+    { 
+                      printRule("ARITHLOGIC_EXPR", "BIN_OP EXPR EXPR"); 
+                      (yyval.typeInfo).type = (yyvsp[-2].typeInfo).returnType;
+                    }
+#line 1464 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 148 "../src/homework.y" /* yacc.c:1646  */
+#line 151 "../src/homework.y" /* yacc.c:1646  */
     {
                       printRule("ARITHLOGIC_EXPR", "UN_OP EXPR");
                       if((yyvsp[0].typeInfo).type == FUNCTION) {
@@ -1472,113 +1475,125 @@ yyreduce:
                       (yyval.typeInfo).numParams = NOT_APPLICABLE;
                       (yyval.typeInfo).returnType = NOT_APPLICABLE;
                     }
-#line 1476 "homework.tab.c" /* yacc.c:1646  */
+#line 1479 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 160 "../src/homework.y" /* yacc.c:1646  */
-    { printRule("BIN_OP", "LOG_OP"); }
-#line 1482 "homework.tab.c" /* yacc.c:1646  */
+#line 163 "../src/homework.y" /* yacc.c:1646  */
+    { 
+             printRule("BIN_OP", "LOG_OP");
+             (yyval.typeInfo).returnType = BOOL;
+             (yyval.typeInfo).type = LOG;
+           }
+#line 1489 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 161 "../src/homework.y" /* yacc.c:1646  */
-    { printRule("BIN_OP", "REL_OP"); }
-#line 1488 "homework.tab.c" /* yacc.c:1646  */
+#line 168 "../src/homework.y" /* yacc.c:1646  */
+    { 
+             printRule("BIN_OP", "REL_OP");
+             (yyval.typeInfo).returnType = BOOL;
+             (yyval.typeInfo).type = REL;
+           }
+#line 1499 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 162 "../src/homework.y" /* yacc.c:1646  */
-    { printRule("BIN_OP", "ARITH_OP"); }
-#line 1494 "homework.tab.c" /* yacc.c:1646  */
+#line 173 "../src/homework.y" /* yacc.c:1646  */
+    { 
+             printRule("BIN_OP", "ARITH_OP");
+             (yyval.typeInfo).type = ARITH;
+             (yyval.typeInfo).returnType = INT;
+           }
+#line 1509 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 165 "../src/homework.y" /* yacc.c:1646  */
+#line 180 "../src/homework.y" /* yacc.c:1646  */
     { printRule("UN_OP", "not"); }
-#line 1500 "homework.tab.c" /* yacc.c:1646  */
+#line 1515 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 168 "../src/homework.y" /* yacc.c:1646  */
+#line 183 "../src/homework.y" /* yacc.c:1646  */
     { printRule("LOG_OP", "and"); }
-#line 1506 "homework.tab.c" /* yacc.c:1646  */
+#line 1521 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 169 "../src/homework.y" /* yacc.c:1646  */
+#line 184 "../src/homework.y" /* yacc.c:1646  */
     { printRule("LOG_OP", "or"); }
-#line 1512 "homework.tab.c" /* yacc.c:1646  */
+#line 1527 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 172 "../src/homework.y" /* yacc.c:1646  */
+#line 187 "../src/homework.y" /* yacc.c:1646  */
     { printRule("REL_OP", "<"); }
-#line 1518 "homework.tab.c" /* yacc.c:1646  */
+#line 1533 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 173 "../src/homework.y" /* yacc.c:1646  */
+#line 188 "../src/homework.y" /* yacc.c:1646  */
     { printRule("REL_OP", ">"); }
-#line 1524 "homework.tab.c" /* yacc.c:1646  */
+#line 1539 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 174 "../src/homework.y" /* yacc.c:1646  */
+#line 189 "../src/homework.y" /* yacc.c:1646  */
     { printRule("REL_OP", "<="); }
-#line 1530 "homework.tab.c" /* yacc.c:1646  */
+#line 1545 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 175 "../src/homework.y" /* yacc.c:1646  */
+#line 190 "../src/homework.y" /* yacc.c:1646  */
     { printRule("REL_OP", ">="); }
-#line 1536 "homework.tab.c" /* yacc.c:1646  */
+#line 1551 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 176 "../src/homework.y" /* yacc.c:1646  */
+#line 191 "../src/homework.y" /* yacc.c:1646  */
     { printRule("REL_OP", "="); }
-#line 1542 "homework.tab.c" /* yacc.c:1646  */
+#line 1557 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 177 "../src/homework.y" /* yacc.c:1646  */
+#line 192 "../src/homework.y" /* yacc.c:1646  */
     { printRule("REL_OP", "/="); }
-#line 1548 "homework.tab.c" /* yacc.c:1646  */
+#line 1563 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 180 "../src/homework.y" /* yacc.c:1646  */
+#line 195 "../src/homework.y" /* yacc.c:1646  */
     { printRule("ARITH_OP", "+"); }
-#line 1554 "homework.tab.c" /* yacc.c:1646  */
+#line 1569 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 181 "../src/homework.y" /* yacc.c:1646  */
+#line 196 "../src/homework.y" /* yacc.c:1646  */
     { printRule("ARITH_OP", "*"); }
-#line 1560 "homework.tab.c" /* yacc.c:1646  */
+#line 1575 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 182 "../src/homework.y" /* yacc.c:1646  */
+#line 197 "../src/homework.y" /* yacc.c:1646  */
     { printRule("ARITH_OP", "/"); }
-#line 1566 "homework.tab.c" /* yacc.c:1646  */
+#line 1581 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 183 "../src/homework.y" /* yacc.c:1646  */
+#line 198 "../src/homework.y" /* yacc.c:1646  */
     { printRule("ARITH_OP", "-"); }
-#line 1572 "homework.tab.c" /* yacc.c:1646  */
+#line 1587 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 186 "../src/homework.y" /* yacc.c:1646  */
+#line 201 "../src/homework.y" /* yacc.c:1646  */
     { printRule("ID_EXPR_LIST", "epsilon"); }
-#line 1578 "homework.tab.c" /* yacc.c:1646  */
+#line 1593 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 187 "../src/homework.y" /* yacc.c:1646  */
+#line 202 "../src/homework.y" /* yacc.c:1646  */
     { 
                   printRule("ID_EXPR_LIST", "ID_EXPR_LIST ( IDENT EXPR )"); 
                                          
@@ -1592,29 +1607,29 @@ yyreduce:
                     scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(string((yyvsp[-2].text)), -1));
                   } 
                  }
-#line 1596 "homework.tab.c" /* yacc.c:1646  */
+#line 1611 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 201 "../src/homework.y" /* yacc.c:1646  */
+#line 216 "../src/homework.y" /* yacc.c:1646  */
     { printRule("EXPR_LIST", "EXPR"); }
-#line 1602 "homework.tab.c" /* yacc.c:1646  */
+#line 1617 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 202 "../src/homework.y" /* yacc.c:1646  */
+#line 217 "../src/homework.y" /* yacc.c:1646  */
     { printRule("EXPR_LIST", "EXPR EXPR_LIST"); }
-#line 1608 "homework.tab.c" /* yacc.c:1646  */
+#line 1623 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 205 "../src/homework.y" /* yacc.c:1646  */
+#line 220 "../src/homework.y" /* yacc.c:1646  */
     { printRule("ID_LIST", "epsilon"); }
-#line 1614 "homework.tab.c" /* yacc.c:1646  */
+#line 1629 "homework.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 206 "../src/homework.y" /* yacc.c:1646  */
+#line 221 "../src/homework.y" /* yacc.c:1646  */
     { 
                   printRule("ID_LIST", "ID_LIST IDENT"); 
               
@@ -1628,11 +1643,11 @@ yyreduce:
                      scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(string((yyvsp[0].text)), -1));
                    }
             }
-#line 1632 "homework.tab.c" /* yacc.c:1646  */
+#line 1647 "homework.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1636 "homework.tab.c" /* yacc.c:1646  */
+#line 1651 "homework.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1860,7 +1875,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 220 "../src/homework.y" /* yacc.c:1906  */
+#line 235 "../src/homework.y" /* yacc.c:1906  */
 
 
 #include "lex.yy.c"

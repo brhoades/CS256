@@ -7,6 +7,9 @@
 #define INT_OR_BOOL 5
 #define STR_OR_BOOL 6
 #define ANY 7
+#define ARITH 8
+#define LOG 0b10000
+#define REL 0b100000
 
 #define NOT_APPLICABLE -1
 
