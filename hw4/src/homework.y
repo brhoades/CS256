@@ -313,11 +313,27 @@ bool argTypesOkay(int opType, int t1, int t2) {
       return (t1 == INT && t2 == INT);
     case LOG:
       return (t1 == t2) ||
-             (t1 == INT && t2 == STR) || //FINISH THIS
-             ();
+             (t1 == INT && t2 == STR) ||
+             (t1 == INT && t2 == BOOL) ||
+             (t1 == STR && t2 == BOOL);
+    default: return false;
   }
 }
 
 string getArgTypesErrorMessage(int, int, int) {
-
+  switch(opType) {
+    case REL:
+      if(t1 == INT && t2 != INT) {
+          return "Arg 2 must be integer";
+      } else if (t1 == STR && t2 != STR) {
+          return "Arg 2 must be string";
+    case ARITH:
+      return (t1 == INT && t2 == INT);
+    case LOG:
+      return (t1 == t2) ||
+             (t1 == INT && t2 == STR) ||
+             (t1 == INT && t2 == BOOL) ||
+             (t1 == STR && t2 == BOOL);
+    default: return false;
+  }
 }
